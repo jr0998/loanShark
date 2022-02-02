@@ -56,7 +56,7 @@
             <div class="row row-cols-1 row-cols-lg-2">
                 <div class="col">
                     <h5 class="fw-bold display-6">Loan Calculator</h5>
-                    <form class="row px-2 py-2">
+                    <form class="form-control row px-2 py-2">
                         <h6>Loan Amount: </h6>
                         <input type="number" id="amount" placeholder="100" aria-label="Loan Amount">
                         <h6>Months: </h6>
@@ -64,7 +64,7 @@
                         <h6>Interest: </h6>
                         <input type="number" id="interest" placeholder="4" aria-label="Interest Rate">
 
-                        <button class="btn mt-2 btn-primary" id="btnSubmit">Generate</button>
+                        <button type="button" class="btn mt-2 btn-primary" id="btnSubmit">Generate</button>
                     </form>
                 </div>
                 <div class="col mt-5">
@@ -112,7 +112,6 @@
                     <div class="row">
                         <div class="col social"><a href="#"><i class="fab fa-linkedin fa-2x"></i></a></div>
                         <div class="col social"><a href="#"><i class="fab fa-github fa-2x"></i></a></div>
-                        <div class="col social"><a href="#"><i class="fab fa-twitter fa-2x"></i></a></div>
                     </div>
                 </div>
             </div>
@@ -122,6 +121,9 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
     <script src="/js/site.js"></script>
+    <script>
+        document.getElementById("btnSubmit").addEventListener("click", getData);
+    </script>
 
 </body>
 
