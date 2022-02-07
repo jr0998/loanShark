@@ -58,11 +58,11 @@
                     <h5 class="fw-bold display-6">Loan Calculator</h5>
                     <form class="form-control row px-2 py-2">
                         <h6>Loan Amount: </h6>
-                        <input type="number" id="amount" placeholder="100" aria-label="Loan Amount">
+                        <input type="number" id="amount" placeholder="100" aria-label="Loan Amount" value="100">
                         <h6>Months: </h6>
-                        <input type="number" id="time" placeholder="12" aria-label="Duration of Loan">
+                        <input type="number" id="time" placeholder="12" aria-label="Duration of Loan" value="12">
                         <h6>Interest: </h6>
-                        <input type="number" id="interest" placeholder="4" aria-label="Interest Rate">
+                        <input type="number" id="interest" placeholder="4" aria-label="Interest Rate" value="4">
 
                         <button type="button" class="btn mt-2 btn-primary" id="btnSubmit">Generate</button>
                     </form>
@@ -79,8 +79,8 @@
             </div>
             <div class="row mt-2">
                 <div class="col">
-                <table class="table table-bordered text-light table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped" >
+                    <thead class="text-light">
                         <th>Month</th>
                         <th>Payment</th>
                         <th>Principal</th>
