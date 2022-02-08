@@ -39,7 +39,7 @@
                         <a class="nav-link active" aria-current="page" href="/code.html">Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://github.com/jr0998/miniSiteTemplate">Git
+                        <a class="nav-link" target="_blank" href="https://github.com/jr0998/loanShark">Git
                             Repo</a>
                     </li>
                     <li class="nav-item">
@@ -55,17 +55,130 @@
             <div class="row row-cols-1 row-cols-lg-2 py-5 ">
                 <div class="col-lg-8">
                     <pre class="line-numbers"> <code class="language-javascript">
-                        //call hello world
-                        function helloWorld(){
-                         alert("Hello World");
+                        function getData() {
+                            let loanAmount = document.getElementById("amount").value;
+                            let time = document.getElementById("time").value;
+                            let interest = document.getElementById("interest").value;
+                            const userLoan = new loanInfo(loanAmount, time, interest);
+                            if (Number.isNaN(loanAmount) && Number.isNaN(time) && Number.isNaN(interest)) {
+                                alert("One of the values is not a number, correct and continue with calculator.");
+                            } else {
+                                displayData(userLoan);
+                                displayTable(userLoan);
+                            }
+                        }
+                        
+                        function loanInfo(loanAmount, time, interest) {
+                            this.loanAmount = loanAmount;
+                            this.time = time;
+                            this.interest = interest / 100;
+                        }
+                        
+                        function getTotalCost(userObj) {
+                            let cost = getMonthPayment(userObj) * userObj.time;
+                            return cost;
+                        }
+                        
+                        function getTotalInterest(userObj) {
+                            let int = getTotalCost(userObj) - userObj.loanAmount;
+                            return int;
+                        }
+                        
+                        function getMonthPayment(userObj) {
+                            let p = userObj.loanAmount;
+                            let r = userObj.interest / 12;
+                            let n = userObj.time;
+                            let cost = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+                            return cost;
+                        }
+                        
+                        function getAmortInterest(userObj) {
+                            let month = [];
+                            month[0] = 0;
+                            let principal = userObj.loanAmount;
+                            for (let i = 1; i <= userObj.time; i++) {
+                                month[i] = (principal * userObj.interest) / 12;
+                                principal -= (getMonthPayment(userObj) - month[i]);
+                            }
+                            return month;
+                        }
+                        
+                        function getBalance(userObj, index) {
+                            let balance = (getTotalCost(userObj)) - (getMonthPayment(userObj) * index);
+                            return balance;
+                        
+                        }
+                        
+                        function displayData(userObj) {
+                            document.getElementById("totalPrin").innerHTML = `Total Principle: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(userObj.loanAmount)}`;
+                            document.getElementById("totalIn").innerHTML = `Total Interest: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getTotalInterest(userObj))}`;
+                            document.getElementById("totalCost").innerHTML = `Total Cost: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getTotalCost(userObj))}`;
+                            document.getElementById("monthPay").innerHTML = `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getMonthPayment(userObj))}`;
+                        }
+                        
+                        function displayTable(userObj) {
+                            document.getElementById("results").innerHTML = ``;
+                            let amInterest = [];
+                            let amTotal = 0;
+                            let total = 0;
+                            amInterest = getAmortInterest(userObj);
+                            for (let i = 1; i <= (userObj.time); i++) {
+                                document.getElementById("results").innerHTML += `<td>${i}</td>
+                                <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getMonthPayment(userObj))}</td>
+                                <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total+=(getMonthPayment(userObj)-amInterest[i]))}</td>
+                                <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amInterest[i])}</td>
+                                <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amTotal+=amInterest[i])}</td>
+                                <td>${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getBalance(userObj,i))}</td>
+                                `;
+                            }
                         }
                     </code>
                     </pre>
                 </div>
                 <div class="col-lg-4">
-                    <p>The Code is structured in one function.</p>
-                    <h5>Hello World</h5>
-                    <p>Hello World is a function that displays an alert with a message of "Hello World"</p>
+                    <h5>getData</h5>
+                    <p>getData is the main function, it brings in the info from the user and HTML
+                        document. Then checks that they are numbers, from there it calls two display
+                        functions that call and print all of the data for the user.
+                    </p><br><br><br><br><br><br><br>
+                    <h5>loanInfo</h5>
+                    <p>loanInfo is the constructor for the users loan object that will store all of
+                        the loan data gathered from the user
+                    </p> 
+                    <h5>getTotalCost</h5>
+                    <p>getTotalCost finds the total amount that will be paid with the loan amount
+                        plus interest. This is done my multiplying the monthy payment amount by 
+                        the length of the loan in months.
+                    </p>
+                    <h5>getTotalInterest</h5>
+                    <p>getTotalInterest finds the amount of interest that will be paid by subtracting
+                        the loan amount from the total cost of the loan.
+                    </p>
+                    <h5>getMontlyPayment</h5>
+                    <p>getMonthlyPayment calculates the cost of the monthy payment from the loan amount
+                        the monthly interest and the time of the loan in months. Then plugging that data 
+                        into a formula, the monthly payment is found and returned.
+                    </p> <br><br>
+                    <h5>getAmortInterest</h5>
+                    <p>getAmortInterest calculates what part of the montly payment goes towards the pricipal
+                        of the loan, and what percent goes to the interest of the loan.  This is done by creating
+                        and array to store each month and then finding how much interest will be paid by using an
+                        ammortization formula.
+                    </p><br><br><br>
+                    <h5>getBalance</h5>
+                    <p>getBalance finds the balance of the loan in each month by getting the total cost of the loan 
+                        and subtracting the monthly payment muliplied by how many months into the loan the user is.
+                    </p>
+                    <h5>displayData</h5>
+                    <p>displayData displays the users montly payment, the prinipal amount of the loan, the interest 
+                        amount of the loan, and the total cost of the loan.
+                    </p><br><br>
+                    <h5>displayTable</h5>
+                    <p>displayTable populates the body of a table with the data of the ammortization schedule,
+                        showing how much each month is going towards principal and interest, and how much is 
+                        still owed on the loan.
+                    </p>
+                    
                 </div>
             </div>
         </div>
