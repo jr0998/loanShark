@@ -18,10 +18,7 @@ function loanInfo(loanAmount, time, interest) {
 }
 
 function getTotalCost(userObj) {
-    let a = userObj.loanAmount;
-    let i = userObj.interest
-    let t = userObj.time;
-    let cost = a * (1+(i / t));
+    let cost = getMonthPayment(userObj) * userObj.time;
     return cost;
 }
 
@@ -31,12 +28,11 @@ function getTotalInterest(userObj) {
 }
 
 function getMonthPayment(userObj) {
-    let a = getTotalCost(userObj);
-    let n = userObj.time;
+    let p = userObj.loanAmount;
     let r = userObj.interest / 12;
-    console.log(r);
-    let monthPay = (a * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
-    return monthPay;
+    let n = userObj.time;
+    let cost = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    return cost;
 }
 
 function getAmortInterest(userObj) {
@@ -59,7 +55,7 @@ function getBalance(userObj, index) {
 function displayData(userObj) {
     document.getElementById("totalPrin").innerHTML = `Total Principle: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(userObj.loanAmount)}`;
     document.getElementById("totalIn").innerHTML = `Total Interest: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getTotalInterest(userObj))}`;
-    document.getElementById("totalCost").innerHTML = `Total Interest: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getTotalCost(userObj))}`;
+    document.getElementById("totalCost").innerHTML = `Total Cost: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getTotalCost(userObj))}`;
     document.getElementById("monthPay").innerHTML = `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(getMonthPayment(userObj))}`;
 }
 
